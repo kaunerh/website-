@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Loan Repayment Calculator</title>
+  <style>
+    /* ======== BASIC PAGE STYLES ======== */
+    body {
+      font-family: Arial, sans-serif;
+      background: #f5f6fa; /* irin na homepage */
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    /* ======== HEADER ======== */
+    header {
+      background: #007bff;
+      color: white;
+      width: 100%;
+      text-align: center;
+      padding: 25px 0;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 28px;
+      font-weight: bold;
+      letter-spacing: 1px;
+    }
+
+    /* ======== MAIN CONTAINER ======== */
+    .container {
+      background: white;
+      margin-top: 40px;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      width: 90%;
+      max-width: 600px;
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    label {
+      display: block;
+      font-weight: bold;
+      margin-bottom: 5px;
+      color: #333;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 15px;
+    }
+
+    /* ======== BUTTONS ======== */
+    .btn {
+      padding: 10px 20px;
+      background: #007bff;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: 0.3s;
+    }
+
+    .btn:hover {
+      background: #1e7e34;
+    }
+
+    .buttons {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 25px;
+    }
+
+    /* ======== RESULT ======== */
+    #result {
+      margin-top: 25px;
+      font-size: 1.2rem;
+      font-weight: bold;
+      text-align: center;
+      color: #333;
+    }
+
+    /* ======== FOOTER ======== */
+    footer {
+      width: 100%;
+      text-align: center;
+      background: #f1f1f1;
+      padding: 20px;
+      margin-top: auto;
+    }
+
+    footer p {
+      margin: 0;
+      font-size: 14px;
+      color: #333;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header>
+    <h1>💰 Loan Repayment Calculator</h1>
+  </header>
+
+  <!-- MAIN CONTENT -->
+  <div class="container">
+    <div class="form-group">
+      <label for="loanAmount">Loan Amount (₦)</label>
+      <input type="number" id="loanAmount" placeholder="e.g. 200000">
+    </div>
+
+    <div class="form-group">
+      <label for="interestRate">Annual Interest Rate (%)</label>
+      <input type="number" id="interestRate" placeholder="e.g. 5">
+    </div>
+
+    <div class="form-group">
+      <label for="years">Repayment Period (Years)</label>
+      <input type="number" id="years" placeholder="e.g. 4">
+    </div>
+
+    <div class="buttons">
+      <button class="btn" onclick="calculateLoan()">Calculate</button>
+      <a href="index.html" class="btn">Home</a>
+    </div>
+
+    <div id="result"></div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>&copy; 2025 Safiyya Muhammad Zakar — All Rights Reserved</p>
+  </footer>
+
+  <!-- SCRIPT -->
+  <script>
+    function calculateLoan(){
+      const amount = parseFloat(document.getElementById('loanAmount').value) || 0;
+      const rate = (parseFloat(document.getElementById('interestRate').value) || 0) / 100 / 12;
+      const months = (parseInt(document.getElementById('years').value) || 0) * 12;
+
+      if (amount <= 0 || months <= 0) {
+        document.getElementById('result').textContent = "⚠️ Please enter valid numbers.";
+        return;
+      }
+
+      const monthly = rate > 0
+        ? (amount * rate) / (1 - Math.pow(1 + rate, -months))
+        : amount / months;
+
+      document.getElementById('result').textContent =
+        `📅 Monthly repayment: ₦${monthly.toFixed(2)}`;
+    }
+  </script>
+
+</body>
+</html>
