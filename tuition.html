@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tuition & Scholarship Calculator</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f5f6fa; /* Irin na homepage */
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    header {
+      background: #007bff;
+      color: white;
+      width: 100%;
+      text-align: center;
+      padding: 25px 0;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 28px;
+      font-weight: bold;
+      letter-spacing: 1px;
+    }
+
+    .container {
+      background: white;
+      margin-top: 40px;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      width: 90%;
+      max-width: 600px;
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    label {
+      display: block;
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    .btn {
+      padding: 10px 20px;
+      background: #007bff;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: background 0.3s;
+    }
+
+    .btn:hover {
+      background: #0056b3;
+    }
+
+    .buttons {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 25px;
+    }
+
+    #result {
+      margin-top: 25px;
+      font-size: 1.2rem;
+      font-weight: bold;
+      text-align: center;
+      color: #333;
+    }
+
+    footer {
+      width: 100%;
+      text-align: center;
+      background: #f1f1f1;
+      padding: 20px;
+      margin-top: auto;
+    }
+
+    footer p {
+      margin: 0;
+      font-size: 14px;
+      color: #333;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>🎓 Tuition & Scholarship Calculator</h1>
+  </header>
+
+  <div class="container">
+    <div class="form-group">
+      <label for="tuition">Tuition per Semester (₦)</label>
+      <input type="number" id="tuition" placeholder="e.g. 50000">
+    </div>
+
+    <div class="form-group">
+      <label for="semesters">Number of Semesters</label>
+      <input type="number" id="semesters" placeholder="e.g. 8">
+    </div>
+
+    <div class="form-group">
+      <label for="scholarship">Scholarship (%)</label>
+      <input type="number" id="scholarship" placeholder="e.g. 25">
+    </div>
+
+    <div class="form-group">
+      <label for="otherFees">Other Fees (Library, Lab, etc.)</label>
+      <input type="number" id="otherFees" placeholder="e.g. 10000">
+    </div>
+
+    <div class="buttons">
+      <button class="btn" onclick="calculateTuition()">Calculate</button>
+      <a class="btn" href="index.html">Home</a>
+    </div>
+
+    <div id="result"></div>
+  </div>
+
+  <footer>
+    <p>&copy; 2025 Safiyya Muhammad Zakar — All Rights Reserved</p>
+  </footer>
+
+  <script>
+    function calculateTuition(){
+      const tuition = parseFloat(document.getElementById('tuition').value) || 0;
+      const semesters = parseInt(document.getElementById('semesters').value) || 0;
+      const scholarship = parseFloat(document.getElementById('scholarship').value) || 0;
+      const otherFees = parseFloat(document.getElementById('otherFees').value) || 0;
+
+      if (tuition <= 0 || semesters <= 0) {
+        document.getElementById('result').textContent = "Please enter valid tuition and semesters!";
+        return;
+      }
+
+      const gross = (tuition * semesters) + otherFees;
+      const discount = gross * (scholarship / 100);
+      const netPay = gross - discount;
+
+      document.getElementById('result').textContent =
+        `Total amount to pay after scholarship: ₦${netPay.toFixed(2)}`;
+    }
+  </script>
+
+</body>
+</html>
