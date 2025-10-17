@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GPA & CGPA Calculator</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f5f6fa;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    header {
+      background: #007bff;
+      color: #f5f6fa;
+      width: 100%;
+      padding: 30px 0;
+      text-align: center;
+    }
+
+    h1 {
+      text-align: center;
+      color: linear-gradient(90deg, #00d4ff, #6f42c1, #e83e8c, #dc3545);
+    }
+
+    @keyframes flash {
+      from { text-shadow: 0 0 5px #fff, 0 0 15px #00bfff; }
+      to { text-shadow: 0 0 20px #fff, 0 0 40px #007bff; }
+    }
+
+    .container {
+      background: white;
+      width: 90%;
+      max-width: 900px;
+      margin: 40px 0;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    h2 {
+      text-align: center;
+      color: #007bff;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+
+    th, td {
+      padding: 10px;
+      border: 1px solid #ccc;
+      text-align: center;
+    }
+
+    th {
+      background: #007bff;
+      color: white;
+    }
+
+    input, select {
+      width: 90%;
+      padding: 7px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+
+    .btn {
+      background: #007bff;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+      margin: 10px 5px;
+    }
+
+    .btn:hover {
+      background: #0056b3;
+    }
+
+    #result, #cgpaResult {
+      margin-top: 15px;
+      font-weight: bold;
+      font-size: 1.1rem;
+      text-align: center;
+      color: #333;
+    }
+
+    a.home-link {
+      display: inline-block;
+      margin-bottom: 15px;
+      text-decoration: none;
+      color: #007bff;
+      font-weight: bold;
+    }
+
+    a.home-link:hover {
+      text-decoration: underline;
+    }
+
+    footer {
+      background: #f1f1f1;
+      text-align: center;
+      padding: 15px;
+      color: #555;
+      width: 100%;
+      animation: slide 4s infinite alternate;
+    }
+
+    @keyframes slide {
+      from { transform: translateX(-10px); }
+      to { transform: translateX(10px); }
+    }
+
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>🎓 GPA & CGPA Calculator</h1>
+    <p>Compute your academic performance easily</p>
+  </header>
+
+  <div class="container">
+    <a href="index.html" class="home-link">← Back to Home</a>
+
+    <!-- GPA SECTION -->
+    <h2>GPA Calculator</h2>
+    <table id="gpaTable">
+      <thead>
+        <tr>
+          <th>Course</th>
+          <th>Credit Unit</th>
+          <th>Grade</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><input type="text" placeholder="Course Name"></td>
+          <td><input type="number" min="0" placeholder="Units"></td>
+          <td>
+            <select>
+              <option value="5">A</option>
+              <option value="4">B</option>
+              <option value="3">C</option>
+              <option value="2">D</option>
+              <option value="1">E</option>
+              <option value="0">F</option>
+            </select>
+          </td>
+          <td><button class="btn" onclick="removeRow(this)">Remove</button></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div style="text-align:center;">
+      <button class="btn" onclick="addRow()">+ Add Course</button>
+      <button class="btn" onclick="calculateGPA()">Calculate GPA</button>
+    </div>
+    <div id="result"></div>
+
+    <hr style="margin: 40px 0;">
+
+    <!-- CGPA SECTION -->
+    <h2>CGPA Calculator</h2>
+    <table id="cgpaTable">
+      <thead>
+        <tr>
+          <th>Semester</th>
+          <th>GPA</th>
+          <th>Total Units</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><input type="text" placeholder="Semester (e.g. 1st)"></td>
+          <td><input type="number" step="0.01" placeholder="GPA"></td>
+          <td><input type="number" placeholder="Units"></td>
+          <td><button class="btn" onclick="removeCgpaRow(this)">Remove</button></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div style="text-align:center;">
+      <button class="btn" onclick="addCgpaRow()">+ Add Semester</button>
+      <button class="btn" onclick="calculateCGPA()">Calculate CGPA</button>
+    </div>
+    <div id="cgpaResult"></div>
+  </div>
+
+  <footer>
+    <p>&copy; 2025 Safiyya Muhammad Zakaria – All Rights Reserved</p>
+  </footer>
+
+  <script>
+    function addRow() {
+      const table = document.getElementById('gpaTable').getElementsByTagName('tbody')[0];
+      const newRow = table.rows[0].cloneNode(true);
+      newRow.querySelectorAll('input').forEach(input => input.value = '');
+      table.appendChild(newRow);
+    }
+
+    function removeRow(btn) {
+      const row = btn.parentNode.parentNode;
+      const table = document.getElementById('gpaTable').getElementsByTagName('tbody')[0];
+      if (table.rows.length > 1) table.removeChild(row);
+    }
+
+    function calculateGPA() {
+      let totalUnits = 0, totalPoints = 0;
+      const rows = document.querySelectorAll('#gpaTable tbody tr');
+      rows.forEach(row => {
+        const units = parseFloat(row.cells[1].querySelector('input').value) || 0;
+        const gradePoint = parseFloat(row.cells[2].querySelector('select').value);
+        totalUnits += units;
+        totalPoints += units * gradePoint;
+      });
+      const gpa = totalUnits ? (totalPoints / totalUnits).toFixed(2) : 0;
+      document.getElementById('result').textContent = `Your GPA is: ${gpa}`;
+    }
+
+    function addCgpaRow() {
+      const table = document.getElementById('cgpaTable').getElementsByTagName('tbody')[0];
+      const newRow = table.rows[0].cloneNode(true);
+      newRow.querySelectorAll('input').forEach(input => input.value = '');
+      table.appendChild(newRow);
+    }
+
+    function removeCgpaRow(btn) {
+      const row = btn.parentNode.parentNode;
+      const table = document.getElementById('cgpaTable').getElementsByTagName('tbody')[0];
+      if (table.rows.length > 1) table.removeChild(row);
+    }
+
+    function calculateCGPA() {
+      let totalUnits = 0, totalWeightedGPA = 0;
+      const rows = document.querySelectorAll('#cgpaTable tbody tr');
+      rows.forEach(row => {
+        const gpa = parseFloat(row.cells[1].querySelector('input').value) || 0;
+        const units = parseFloat(row.cells[2].querySelector('input').value) || 0;
+        totalUnits += units;
+        totalWeightedGPA += gpa * units;
+      });
+      const cgpa = totalUnits ? (totalWeightedGPA / totalUnits).toFixed(2) : 0;
+      document.getElementById('cgpaResult').textContent = `Your CGPA is: ${cgpa}`;
+    }
+  </script>
+
+</body>
+</html>
